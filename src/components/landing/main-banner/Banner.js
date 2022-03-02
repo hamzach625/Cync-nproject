@@ -16,13 +16,10 @@ const Banner = () => {
     PurchaseModalOpen();
   }, []);
 
-
-  let axios = require('axios');
+  let axios = require("axios");
 
   async function dataCall() {
     try {
-
-
       let ethToUSD = `
 {
     ethereum(network: ethereum) {
@@ -40,7 +37,7 @@ const Banner = () => {
       }
     }
   }
-  `
+  `;
 
       let tokenToETh = `{
 ethereum(network: ethereum) {
@@ -60,24 +57,37 @@ ethereum(network: ethereum) {
       quotePrice
     }
   }
-}`
+}`;
 
-      let tokenToEthData = await axios.post(`https://graphql.bitquery.io/`, { query: tokenToETh }, { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } });
-      let ethToUsdData = await axios.post(`https://graphql.bitquery.io/`, { query: ethToUSD }, { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } });
-      setprice(ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice / tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice)
-      
+      let tokenToEthData = await axios.post(
+        `https://graphql.bitquery.io/`,
+        { query: tokenToETh },
+        { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } }
+      );
+      let ethToUsdData = await axios.post(
+        `https://graphql.bitquery.io/`,
+        { query: ethToUSD },
+        { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } }
+      );
+      setprice(
+        ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice /
+          tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice
+      );
+
       console.log(tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice);
       console.log(ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice);
 
-      console.log('sdsdsd', ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice / tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice)
+      console.log(
+        "sdsdsd",
+        ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice /
+          tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice
+      );
     } catch (error) {
-      console.log('error:::', error)
+      console.log("error:::", error);
     }
-
   }
 
-  dataCall()
-
+  dataCall();
 
   const owl_option = {
     nav: true,
@@ -211,7 +221,7 @@ ethereum(network: ethereum) {
                     </a>
 
                     <a
-                      href="https://www.redditinc.com//BpHbpDdt7w"
+                      href="https://www.reddit.com/r/CYNC_Project/"
                       target="_blank"
                     >
                       <div className="img">
@@ -396,7 +406,7 @@ ethereum(network: ethereum) {
                     </h3>
                     <button>
                       {" "}
-                      <a href="/Coming"> BUY ON CYNSWAP</a>
+                      <a href="/Swap"> BUY ON CYNSWAP</a>
                     </button>
                   </div>
                 </div>
@@ -430,11 +440,7 @@ ethereum(network: ethereum) {
                 <span>|</span>
                 <div className="inner">
                   <p>Current Price</p>
-                  <h6>${price ?
-                  price.toFixed(7)
-                  :
-                  0
-                } </h6>
+                  <h6>${price ? price.toFixed(7) : 0} </h6>
                 </div>
                 <span>|</span>
                 <div className="inner">
@@ -772,7 +778,7 @@ ethereum(network: ethereum) {
                   </a>
 
                   <a
-                    href="https://www.redditinc.com//BpHbpDdt7w"
+                    href="https://www.reddit.com/r/CYNC_Project/"
                     target="_blank"
                   >
                     <div className="img">
