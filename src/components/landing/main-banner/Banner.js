@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -11,10 +11,73 @@ const Banner = () => {
   const PurchaseModalclose = () => {
     window.$("#exampleModal").modal("hide");
   };
-
+  const [price, setprice] = useState(0);
   useEffect(() => {
     PurchaseModalOpen();
   }, []);
+
+
+  let axios = require('axios');
+
+  async function dataCall() {
+    try {
+
+
+      let ethToUSD = `
+{
+    ethereum(network: ethereum) {
+      dexTrades(
+        options: {desc: ["block.height","tradeIndex"], limit: 1}
+        exchangeName: {in: ["Uniswap", "Uniswap v2" , "Uniswap v3"]}
+        baseCurrency: {is: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"}
+        quoteCurrency: {is: "0xdAC17F958D2ee523a2206206994597C13D831ec7"}
+      ) {
+        tradeIndex
+        block {
+          height
+        }
+        quotePrice
+      }
+    }
+  }
+  `
+
+      let tokenToETh = `{
+ethereum(network: ethereum) {
+    dexTrades(
+      options: {desc: ["block.height","tradeIndex"], limit: 1}
+      exchangeName: {in: ["Uniswap", "Uniswap v2" , "Uniswap v3"]}
+      baseCurrency: {is: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"}
+      quoteCurrency: {is: "0xa5522d6137Ece774e8084BBf9c34398192cCdCa5"}
+    ) {
+      transaction {
+        hash
+      }
+      tradeIndex
+      block {
+        height
+      }
+      quotePrice
+    }
+  }
+}`
+
+      let tokenToEthData = await axios.post(`https://graphql.bitquery.io/`, { query: tokenToETh }, { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } });
+      let ethToUsdData = await axios.post(`https://graphql.bitquery.io/`, { query: ethToUSD }, { headers: { "X-API-KEY": "BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z" } });
+      setprice(ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice / tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice)
+      
+      console.log(tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice);
+      console.log(ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice);
+
+      console.log('sdsdsd', ethToUsdData.data.data.ethereum.dexTrades[0].quotePrice / tokenToEthData.data.data.ethereum.dexTrades[0].quotePrice)
+    } catch (error) {
+      console.log('error:::', error)
+    }
+
+  }
+
+  dataCall()
+
 
   const owl_option = {
     nav: true,
@@ -367,7 +430,11 @@ const Banner = () => {
                 <span>|</span>
                 <div className="inner">
                   <p>Current Price</p>
-                  <h6>$0.00001821 </h6>
+                  <h6>${price ?
+                  price.toFixed(6)
+                  :
+                  0
+                } </h6>
                 </div>
                 <span>|</span>
                 <div className="inner">
