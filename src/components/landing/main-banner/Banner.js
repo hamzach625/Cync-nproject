@@ -431,7 +431,7 @@ ethereum(network: ethereum) {
                 <div className="inner">
                   <p>Current Price</p>
                   <h6>${price ?
-                  price.toFixed(6)
+                  price.toFixed(7)
                   :
                   0
                 } </h6>
